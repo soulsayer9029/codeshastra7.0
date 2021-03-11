@@ -1,0 +1,21 @@
+ -Setup project  DONE
+ - User Schema wrt google oauth as well DONE
+    -google oauth left
+ 
+ - setup postman and make all calls for user
+ - create routes with proper url routing
+    -get user DONE
+    -get users DONE
+    -login DONE
+    -logout DONE
+    -Sign Up DONE
+    -Update user DONE
+    -Delete user DONE
+ -create Controllers
+    -get user 
+    -get users 
+    -login 
+    -logout 
+    -Sign Up 
+    -Update user 
+    -Delete user 
