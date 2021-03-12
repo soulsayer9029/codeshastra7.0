@@ -9,12 +9,16 @@ app.use(cors())
 const bodyParser=require('body-parser')
 app.use(bodyParser.json())
 
+const users = require('./routes/users');
+
 const port=process.env.PORT || 3000
 
 
 app.get('/',(req,res)=>{
     res.send('<h1>Noice</h1>')
 })
+
+app.use('/api/v1/users/', users);
 
 
 mongoose.connect(process.env.CONNECTION_URL,{useNewUrlParser:true,useUnifiedTopology:true})

@@ -9,11 +9,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add a last name']
   },
-  // username: {
-  //   type: String,
-  //   unique: [true, 'Username already takem'],
-  //   required: [true, 'Please add a username']
-  // },
   email: {
     type: String,
     unique: [true, 'Email already taken'],
@@ -22,10 +17,33 @@ const UserSchema = new mongoose.Schema({
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Please add a valid email'
     ]
   },
+  aadharNumber: {
+    type: Number,
+    required: [true, 'Please add an aadhar number'],
+    unique: [true, 'Aadhar number already in use']
+  },
+  state: {
+    type: String,
+    enum: [ "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and  Kashmir", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttarakhand", "Uttar Pradesh", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli", "Daman and Diu", "Delhi", "Lakshadweep", "Puducherry" ],
+    required: [true, 'Please choose a state']
+  },
+  pinCode: {
+    type: Number,
+    required: [true, 'Please add a pin-code'],
+    minLength: 6,
+    maxLength: 6
+  },
+  mobileNumber: {
+    type: Number,
+    required: [true, 'Please add a number'],
+    unique: [true, 'Number already in use'],
+    minLength: 10,
+    maxLength: 10
+  },
   role: {
     type: String,
-    enum: ['user'],
-    default: 'user'
+    enum: ['seller', 'buyer', 'middleman'],
+    default: 'seller'
   },
   password: {
     type: String,
