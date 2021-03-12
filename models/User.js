@@ -40,6 +40,9 @@ const UserSchema = new mongoose.Schema({
     minLength: 10,
     maxLength: 10
   },
+  avatar:{
+    type:Buffer,
+  },
   role: {
     type: String,
     enum: ['seller', 'buyer', 'middleman'],

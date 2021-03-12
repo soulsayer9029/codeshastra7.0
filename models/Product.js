@@ -1,0 +1,31 @@
+const mongoose = require('mongoose');
+const User=require('../models/User.js')
+const ProductSchema = new mongoose.Schema({
+    quantity:{
+        type:Number,
+        required:[true,'Quantity must be mentioned'],
+    },
+    purity:{
+        type:Number,
+        minimum:[1,'Cannot be less than one'],
+        maximum:[100,'Cannot be more than 100']
+    },
+    cost:{
+        type:Number,
+        required:[true,'Cost needs to be mentioned']
+    },
+    seller:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'User',
+      required:true
+    },
+    // buyer:{
+    //   type:mongoose.Schema.ObjectId,
+    //   ref:'User',
+    // },
+    // middleman:{
+    //   type:mongoose.Schema.ObjectId,
+    //   ref:'User',
+    // }
+});
+module.exports = mongoose.model('Product', ProductSchema);
