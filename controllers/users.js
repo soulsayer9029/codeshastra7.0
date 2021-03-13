@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const bcrypt=require('bcryptjs');
+const jwt=require('jsonwebtoken');
 const asyncHandler = require('../middleware/async');
 
 //@desc     Get all users
@@ -12,30 +14,68 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
   });
 });
 
-//@desc     Get single users
-//@route    GET /api/v1/users/:id
-//@access   Private/Admin
-// exports.getUsers = asyncHandler(async (req, res, next) => {
-//   const user = await User.findbyId(req.params.id);
+// @desc     Get single users
+// @route    GET /api/v1/users/:id
+// @access   public
+exports.getUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findbyId(req.params.id);
 
-//   if(!user) {
+  if(!user) {
+    return res.status(404).json({
+      sucess: false,
+      data: "User does not exist"
+    });
+  }
 
-//   }
-
-//   res.status(200).json({
-//     sucess: true,
-//     data: user
-//   });
-// });
+  res.status(200).json({
+    sucess: true,
+    data: user
+  });
+});
 
 //@desc     Get all users
 //@route    POST /api/v1/users
 //@access   Public
-exports.createUser = async (req, res, next) => {
-  const users = await User.find();
-  console.log(users);
+exports.createUser = asyncHandler(async (req, res, next) => {
+  //hashing the password 
+  const salt=await bcrypt.genSalt(10)
+  const hashedPassword=await bcrypt.hash(req.body.password,salt)
+  
+  const user=new User({
+    firstname:req.body.firstname,
+    lastname:req.body.lastname,
+    email:req.body.email,
+    aadharNumber:req.body.aadharNumber,
+    state:req.body.state,
+    pinCode:req.body.pinCode,
+    mobileNumber:req.body.mobileNumber,
+    role:req.body.role,
+    password:hashedPassword,
+  });
+//saving 
+  user.save()
   res.status(200).json({
     sucess: true,
-    data: users
+    data: user
   });
-};
+});
+// @desc     Login
+// @route    POST /api/v1/users/login
+// @access   Public
+exports.login=async(req,res)=>{
+    const user=await User.findOne({email:req.body.email})
+      if(!user){
+          return res.status(400).send("Invalid credentials")
+      }
+      const validPassword = await bcrypt.compare(req.body.password ,user.password)
+      if(!validPassword){
+          return res.status(400).send("Invalid Credentials")
+      }
+      try{
+        const token=jwt.sign({_id:user._id},process.env.TOKEN_SECRET);
+        res.header('auth-token',token).send(token);
+      }catch(e){
+        return res.status(400).send("Login failed")
+      }
+
+}

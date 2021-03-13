@@ -10,11 +10,12 @@
     -Sign Up DONE
     -Update user DONE
     -Delete user DONE
- -create Controllers
-    -get user 
-    -get users 
+ -create user Controllers
+    -get user Done
+    -get users Done
     -login 
     -logout 
-    -Sign Up 
+    -Sign Up Done
     -Update user 
     -Delete user 
+    -update image

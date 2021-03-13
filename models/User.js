@@ -35,18 +35,23 @@ const UserSchema = new mongoose.Schema({
   },
   mobileNumber: {
     type: Number,
+    //trim:true,
     required: [true, 'Please add a number'],
     unique: [true, 'Number already in use'],
     minLength: 10,
     maxLength: 10
   },
   avatar:{
-    type:Buffer,
+    
+      data: Buffer,
+      contentType: String
+  
   },
   role: {
     type: String,
     enum: ['seller', 'buyer', 'middleman'],
-    default: 'seller'
+    //default: 'seller',
+    required:[true,'role must be defined']
   },
   password: {
     type: String,

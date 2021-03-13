@@ -3,7 +3,9 @@ const router=express.Router();
 
 const {
   getUsers,
-  getUser
+  getUser,
+  createUser,
+  login
 } = require('../controllers/users');
 
 // all routes should be api/user/" xyz "
@@ -12,8 +14,13 @@ const {
 router.get("/",getUsers);
 
 //Get particular user with id
-// router.get("/:id",getUser);
+router.get("/:id",getUser);
 
+//Signup
+router.post("/signup",createUser)
+
+//Login 
+router.post("/login",login)
 // //Update particular user with id
 // router.patch("/:id",updateUser);
 

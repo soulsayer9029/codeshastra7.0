@@ -26,3 +26,4 @@ mongoose.connect(process.env.CONNECTION_URL,{useNewUrlParser:true,useUnifiedTopo
     .catch((e)=>console.log(e.message))
 
 mongoose.set('useFindAndModify',false);
+mongoose.set('useCreateIndex', true);

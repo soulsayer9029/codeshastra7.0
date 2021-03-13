@@ -20,11 +20,11 @@ const ProductSchema = new mongoose.Schema({
       required:true
     },
     // buyer:{
-    //   type:mongoose.Schema.ObjectId,
+    //   type:mongoose.Schema.Types.ObjectId,
     //   ref:'User',
     // },
     // middleman:{
-    //   type:mongoose.Schema.ObjectId,
+    //   type:mongoose.Schema.Types.ObjectId,
     //   ref:'User',
     // }
 });
