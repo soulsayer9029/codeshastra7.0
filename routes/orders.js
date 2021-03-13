@@ -6,7 +6,9 @@ const {
     getPlacedOrders,
     getDispatchedOrders,
     getDeliveredOrders,
-    deleteOrder
+    deleteOrder,
+    acceptOrder,
+    deliverOrder
 } = require('../controllers/orders.js');
 
 //Create order
@@ -21,6 +23,10 @@ router.get('/dispatched', verifyToken, getDispatchedOrders);
 //Get past orders
 router.get('/delivered', verifyToken, getDeliveredOrders);
 
-router.delete('/:id',verifyToken,deleteOrder)
+router.delete('/:id',verifyToken,deleteOrder);
+
+router.patch('/accept/:id', verifyToken, acceptOrder);
+
+router.patch('/deliver/:id', verifyToken, deliverOrder);
 
 module.exports=router;

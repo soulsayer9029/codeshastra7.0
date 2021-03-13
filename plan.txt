@@ -35,10 +35,11 @@ PRODUCT
 ORDER
 - routes:
    - Buyer:
-      - Create Order
-      - Get my orders
-      - Get my previous orders (enter isCompleted boolean in Order model)
-      - Delete Order (keep this as an option - if time permits, involves complex roll back and checking status of the order)
+      - Create Order DONE
+      - Get my orders DONE
+      - Get my previous orders (enter isCompleted boolean in Order model) DONE
+      - Delete Order (keep this as an option - if time permits, involves complex roll back and checking status of the order) DONE
    - Seller:
-      - Get my orders
-      - Get my previous orders (enter isCompleted boolean in Order model)
+      - Get my placed orders DONE
+      - Get my dispatched orders DONE
+      - Get my delivered orders DONE

@@ -132,6 +132,7 @@ exports.getDeliveredOrders = asyncHandler( async(req, res, next) => {
       });
   }
 });
+
 // @desc     Get Past Orders
 // @route    DELETE /api/v1/orders/delete/:id
 // @access   Private/Admin
@@ -143,6 +144,7 @@ exports.deleteOrder= asyncHandler( async(req, res, next) => {
       if(order.status==="Placed"){
         const product=await Product.findById(order.product);
         product.quantity=product.quantity+order.quantity;
+        product.save();
         await Order.deleteOne(order)
         return res.status(200).json({
           success:true,
@@ -151,7 +153,7 @@ exports.deleteOrder= asyncHandler( async(req, res, next) => {
       }else{
         return res.status(400).json({
           success:false,
-          data:"Order has already been dispatched"
+          data:`Order has already been ${order.status}`
         })
       }}else{
         return res.status(400).json({
@@ -167,3 +169,53 @@ exports.deleteOrder= asyncHandler( async(req, res, next) => {
       }
 });
 
+// @desc     Accept Orders
+// @route    PATCH /api/v1/orders/accept/:id
+// @access   Private/Admin
+exports.acceptOrder = asyncHandler( async(req, res, next)=>{
+    const user=await User.findById(req.user._id);
+    if(user.role!=='middleman') {
+      return res.status(400).json({
+        success: false,
+        data: 'You cannot accept orders'
+      });
+    }
+
+    const order = await Order.findById(req.params.id);
+    console.log(order);
+    order.status = 'Dispatched';
+    order.middleman = req.user._id;
+    order.save();
+    res.status(200).json({
+      success: true,
+      data: order
+    });
+});
+
+// @desc     Deliver Orders
+// @route    PATCH /api/v1/orders/deliver/:id
+// @access   Private/Admin
+exports.deliverOrder = asyncHandler(async(req, res, next) => {
+  const user = await User.findById(req.user._id);
+  if(user.role!=='middleman') {
+    return res.status(400).json({
+      success: false,
+      data: 'You cannot confirm order deliver'
+    });
+  }
+
+  const order = await Order.findById(req.params.id);
+
+  if(String(order.middleman)!==String(user._id)) {
+    return res.status(400).json({
+      success: true,
+      data: 'This is not your assigned order to deliver'
+    });
+  }
+  order.status = 'Delivered';
+  order.save();
+  res.status(200).json({
+    success: true,
+    data: order
+  });
+});
