@@ -8,7 +8,8 @@ const ProductSchema = new mongoose.Schema({
     purity:{
         type:Number,
         minimum:[1,'Cannot be less than one'],
-        maximum:[100,'Cannot be more than 100']
+        maximum:[100,'Cannot be more than 100'],
+        required: [true, 'Please add product purity']
     },
     cost:{
         type:Number,

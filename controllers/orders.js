@@ -59,14 +59,14 @@ exports.getPlacedOrders = asyncHandler( async(req, res, next) => {
   const user=await User.findById(req.user._id);
   if(user.role==="buyer"){
     const orders=await Order.find({buyer:req.user._id,
-      status:'Placed'});
+      status:'Placed'}).populate('buyer', 'state').populate('seller', 'state');
       return res.status(200).json({
         success:true,
         data:orders,
         count:orders.length
       });
   } else if(user.role === 'seller') {
-    const orders = await Orders.find({seller:req.user._id, status:'Placed'});
+    const orders = await Orders.find({seller:req.user._id, status:'Placed'}).populate('buyer', 'state').populate('seller', 'state');
       return res.status(200).json({
         success:true,
         data:orders,
@@ -74,7 +74,7 @@ exports.getPlacedOrders = asyncHandler( async(req, res, next) => {
       });
   } else {
     const orders=await Order.find({middleman:req.user._id,
-      status:'Placed'});
+      status:'Placed'}).populate('buyer', 'state').populate('seller', 'state');
       return res.status(200).json({
           success:true,
           data:orders,
@@ -90,14 +90,14 @@ exports.getDispatchedOrders = asyncHandler( async(req, res, next) => {
   const user=await User.findById(req.user._id);
   if(user.role==="buyer"){
     const orders=await Order.find({buyer:req.user._id,
-      status:'Dispatched'});
+      status:'Dispatched'}).populate('buyer', 'state').populate('seller', 'state');
       return res.status(200).json({
         success:true,
         data:orders, 
         count:orders.length
       });
   } else if(user.role === 'seller') {
-    const orders = await Orders.find({seller:req.user._id, status:'Dispatched'});
+    const orders = await Orders.find({seller:req.user._id, status:'Dispatched'}).populate('buyer', 'state').populate('seller', 'state');
       return res.status(200).json({
         success:true,
         data:orders,
@@ -105,7 +105,7 @@ exports.getDispatchedOrders = asyncHandler( async(req, res, next) => {
       });
   } else {
     const orders=await Order.find({middleman:req.user._id,
-      status:'Dispatched'});
+      status:'Dispatched'}).populate('buyer', 'state').populate('seller', 'state');
       return res.status(200).json({
           success:true,
           data:orders,
@@ -113,21 +113,21 @@ exports.getDispatchedOrders = asyncHandler( async(req, res, next) => {
       });
   }
 });
-// @desc     Get Past Orders
+// @desc     Get Delivered Orders
 // @route    GET /api/v1/orders/delivered
 // @access   Private/Admin
 exports.getDeliveredOrders = asyncHandler( async(req, res, next) => {
   const user=await User.findById(req.user._id);
   if(user.role==="buyer"){
     const orders=await Order.find({buyer:req.user._id,
-      status: 'Delivered'});
+      status: 'Delivered'}).populate('buyer', 'state').populate('seller', 'state');
       return res.status(200).json({
         success:true,
         data:orders,
         count:orders.length
       });
   } else if(user.role === 'seller') {
-    const orders = await Orders.find({seller:req.user._id, status: 'Delivered'});
+    const orders = await Orders.find({seller:req.user._id, status: 'Delivered'}).populate('buyer', 'state').populate('seller', 'state');
       return res.status(200).json({
         success:true,
         data:orders,
@@ -135,7 +135,7 @@ exports.getDeliveredOrders = asyncHandler( async(req, res, next) => {
       });
   } else {
     const orders=await Order.find({middleman:req.user._id,
-      status:'Delivered'});
+      status:'Delivered'}).populate('buyer', 'state').populate('seller', 'state');
       return res.status(200).json({
           success:true,
           data:orders,
@@ -144,7 +144,7 @@ exports.getDeliveredOrders = asyncHandler( async(req, res, next) => {
   }
 });
 
-// @desc     Get Past Orders
+// @desc     Delete Order
 // @route    DELETE /api/v1/orders/delete/:id
 // @access   Private/Admin
 exports.deleteOrder= asyncHandler( async(req, res, next) => {

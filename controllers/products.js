@@ -17,7 +17,8 @@ exports.createProduct = asyncHandler(async (req, res, next) => {
     quantity: req.body.quantity,
     cost: req.body.cost,
     seller: req.user._id,
-    isSold: req.body.isSold
+    isSold: req.body.isSold,
+    purity: req.body.purity
   }
   const product = await Product.create(productObj);
 
