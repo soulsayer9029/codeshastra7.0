@@ -10,6 +10,10 @@ const OrderSchema = new mongoose.Schema({
         type:Number,
         required:[true,'quantity needs to be mentioned']
     },
+    seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
     buyer:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
@@ -25,6 +29,11 @@ const OrderSchema = new mongoose.Schema({
     createdAt:{
         type:Date,
         default:Date.now
+    },
+    status:{
+        type:String,
+        enum:['Placed','Dispatched','Delivered'],
+        default:'Placed'
     }
 });
 module.exports = mongoose.model('Order', OrderSchema);
