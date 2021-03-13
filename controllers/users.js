@@ -59,6 +59,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
     data: user
   });
 });
+
 // @desc     Login
 // @route    POST /api/v1/users/login
 // @access   Public
@@ -82,5 +83,36 @@ exports.login=async(req,res)=>{
       }catch(e){
         return res.status(400).send("Login failed")
       }
-
 }
+
+// @desc     Update existing user
+// @route    PATCH /api/v1/users/:id
+// @access   Private/Admin
+exports.updateUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    data: user
+  });
+});
+
+// @desc     Delete an existing user
+// @route    Delete /api/v1/users/:id
+// @access   Private/Admin
+exports.deleteUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if(!user) {
+    res.status(400).send('User does not exist');
+  }
+
+  user.remove();
+  res.status(200).json({
+    success: true,
+    data: user
+  });
+});
