@@ -9,7 +9,6 @@ const OrderSchema = new mongoose.Schema({
     quantity:{
         type:Number,
         required:[true,'quantity needs to be mentioned']
-
     },
     buyer:{
         type:mongoose.Schema.Types.ObjectId,
@@ -19,11 +18,11 @@ const OrderSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
     },
-    cost:{
-        type:number,
-        //default:(order.quantity)*(product.cost)
+    totalCost:{
+        type: Number,
+        default: 0
     },
-    date:{
+    createdAt:{
         type:Date,
         default:Date.now
     }

@@ -16,7 +16,8 @@ exports.createProduct = asyncHandler(async (req, res, next) => {
   const productObj = {
     quantity: req.body.quantity,
     cost: req.body.cost,
-    seller: req.user._id
+    seller: req.user._id,
+    isSold: req.body.isSold
   }
   const product = await Product.create(productObj);
 
@@ -39,7 +40,7 @@ exports.getProducts=asyncHandler(async(req,res,next)=>{
     }
     
     const id=req.user.id;
-    const products= await Product.find().populate('seller', 'firstName lastName email');
+    const products= await Product.find({isSold: false}).populate('seller', 'firstName lastName email');
     res.status(200).json({
       success: true,
       data: products,
@@ -61,7 +62,7 @@ exports.getMyProducts=asyncHandler(async(req,res,next)=>{
         })
     }
     
-    const products= await Product.find({seller:user._id}).populate('seller', 'firstName lastName email');
+    const products= await Product.find({seller:user._id, isSold: false}).populate('seller', 'firstName lastName email');
     res.status(200).json({
       success: true,
       data: products,
@@ -84,7 +85,14 @@ exports.updateProduct=asyncHandler( async(req,res,next)=>{
 
   let product = await Product.findById(req.params.id);
 
-  if(String(user._id)!==String(product.seller)){
+  if(product.isSold){
+    return res.status(400).json({
+      success: false,
+      data: 'Product already sold out'
+    })
+  }
+  
+  if(String(user._id)!=String(product.seller)){
     return res.status(401).json({
       success: false,
       data: 'Access denied, product does not belong to you'
@@ -114,23 +122,27 @@ exports.deleteProduct=asyncHandler(async(req,res,next)=>{
         return res.status(401).json({
             success:false,
             data:"Access denied"
-        })
+        });
     }
-    const id=req.params.id
+    const id=req.params.id;
     
-    const product= await Product.findById(id)
+    const product= await Product.findById(id);
+    if(product.isSold===true) {
+      return res.status(400).json({
+        success: false,
+        data: 'You cannot delete a product which has already been sent'
+      });
+    }
     if(String(product.seller) === String(user._id)){
         await Product.deleteOne({_id:id})
         res.status(200).json({
             success: true,
-            data: "product deleted successfully",
-            
+            data: "Product deleted successfully",
         })
     }else{
         res.status(401).json({
             success: false,
             data: "access denied ,unable to delete",
-            
         })
     }
 });
