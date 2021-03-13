@@ -96,3 +96,38 @@ exports.getPastOrders = asyncHandler( async(req, res, next) => {
       });
   }
 });
+// @desc     Get Past Orders
+// @route    DELETE /api/v1/orders/delete/:id
+// @access   Private/Admin
+exports.deleteOrder= asyncHandler( async(req, res, next) => {
+  const user=await User.findById(req.user._id);
+  if(user.role==='buyer'){
+    const order=await Order.findById(req.params.id);
+    if(String(req.user._id)===String(order.buyer)){
+      if(order.status==="Placed"){
+        const product=await Product.findById(order.product);
+        product.quantity=product.quantity+order.quantity;
+        await Order.deleteOne(order)
+        return res.status(200).json({
+          success:true,
+          data:"Order deleted Succesfully"
+        })
+      }else{
+        return res.status(400).json({
+          success:false,
+          data:"Order has already been dispatched"
+        })
+      }}else{
+        return res.status(400).json({
+          success:false,
+          data:"You are denied of access to delete this order"
+        })
+
+      }}else{
+        return res.status(400).json({
+          success:false,
+          data:"Unauthorized to delete orders"
+        })
+      }
+});
+
