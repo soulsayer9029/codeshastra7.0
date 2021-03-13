@@ -42,57 +42,93 @@ exports.createOrder=asyncHandler( async(req,res,next)=>{
 });
 
 // @desc     Get orders - used only for buyer
-// @route    Get /api/v1/orders/current
+// @route    Get /api/v1/orders/placed
 // @access   Private/Admin
-exports.getCurrentOrders = asyncHandler( async(req, res, next) => {
+exports.getPlacedOrders = asyncHandler( async(req, res, next) => {
   const user=await User.findById(req.user._id);
   if(user.role==="buyer"){
     const orders=await Order.find({buyer:req.user._id,
-      status:{$ne:'Delivered'}});
+      status:'Placed'});
       return res.status(200).json({
         success:true,
-        data:orders
+        data:orders,
+        count:orders.length
       });
   } else if(user.role === 'seller') {
-    const orders = await Orders.find({seller:req.user._id, status:{$ne:'Delivered'}});
+    const orders = await Orders.find({seller:req.user._id, status:'Placed'});
       return res.status(200).json({
         success:true,
-        data:orders
+        data:orders,
+        count: orders.length
       });
   } else {
     const orders=await Order.find({middleman:req.user._id,
-      status:'Delivered'});
+      status:'Placed'});
       return res.status(200).json({
           success:true,
-          data:orders
+          data:orders,
+          count:orders.length
       });
   }
 });
 
-// @desc     Get Past Orders
-// @route    GET /api/v1/orders/past
+// @desc     Get Dispatched Orders
+// @route    GET /api/v1/orders/dispatched
 // @access   Private/Admin
-exports.getPastOrders = asyncHandler( async(req, res, next) => {
+exports.getDispatchedOrders = asyncHandler( async(req, res, next) => {
+  const user=await User.findById(req.user._id);
+  if(user.role==="buyer"){
+    const orders=await Order.find({buyer:req.user._id,
+      status:'Dispatched'});
+      return res.status(200).json({
+        success:true,
+        data:orders, 
+        count:orders.length
+      });
+  } else if(user.role === 'seller') {
+    const orders = await Orders.find({seller:req.user._id, status:'Dispatched'});
+      return res.status(200).json({
+        success:true,
+        data:orders,
+        count: orders.length
+      });
+  } else {
+    const orders=await Order.find({middleman:req.user._id,
+      status:'Dispatched'});
+      return res.status(200).json({
+          success:true,
+          data:orders,
+          count:orders.length
+      });
+  }
+});
+// @desc     Get Past Orders
+// @route    GET /api/v1/orders/delivered
+// @access   Private/Admin
+exports.getDeliveredOrders = asyncHandler( async(req, res, next) => {
   const user=await User.findById(req.user._id);
   if(user.role==="buyer"){
     const orders=await Order.find({buyer:req.user._id,
       status: 'Delivered'});
       return res.status(200).json({
         success:true,
-        data:orders
+        data:orders,
+        count:orders.length
       });
   } else if(user.role === 'seller') {
     const orders = await Orders.find({seller:req.user._id, status: 'Delivered'});
       return res.status(200).json({
         success:true,
-        data:orders
+        data:orders,
+        count: orders.length
       });
   } else {
     const orders=await Order.find({middleman:req.user._id,
       status:'Delivered'});
       return res.status(200).json({
           success:true,
-          data:orders
+          data:orders,
+          count: orders.length
       });
   }
 });

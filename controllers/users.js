@@ -78,7 +78,8 @@ exports.login=async(req,res)=>{
         const token=jwt.sign({_id:user._id},process.env.TOKEN_SECRET);
         res.status(200).header('auth-token',token).json({
           sucess: true,
-          data: token
+          data: user,
+          token: token
         });
       }catch(e){
         return res.status(400).send("Login failed")
