@@ -22,7 +22,10 @@ router.get("/:id",getUser);
 router.post("/signup",createUser)
 
 //Login 
-router.post("/login",login)
+router.post("/login",login);
+
+//Logout - Left
+// router.post('/logout', logout);
 
 // //Update particular user with id
 router.patch("/:id", verifyToken, updateUser);

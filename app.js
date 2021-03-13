@@ -10,6 +10,7 @@ const bodyParser=require('body-parser')
 app.use(express.json())
 
 const users = require('./routes/users');
+const products = require('./routes/products');
 
 const port=process.env.PORT || 3000
 
@@ -19,6 +20,7 @@ app.get('/',(req,res)=>{
 })
 
 app.use('/api/v1/users/', users);
+app.use('/api/v1/products/', products);
 
 
 mongoose.connect(process.env.CONNECTION_URL,{useNewUrlParser:true,useUnifiedTopology:true})

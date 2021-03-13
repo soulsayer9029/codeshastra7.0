@@ -68,7 +68,7 @@ exports.login=async(req,res)=>{
       if(!user){
           return res.status(400).send("Invalid credentials + User not found");
       }
-      console.log(user)
+      // console.log(user)
       const validPassword = await bcrypt.compare(req.body.password ,user.password)
       
       if(!validPassword){

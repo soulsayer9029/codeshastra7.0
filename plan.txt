@@ -1,21 +1,44 @@
  -Setup project  DONE
  - User Schema wrt google oauth as well DONE
  
- - setup postman and make all calls for user DONE
- - create routes with proper url routing
+ - setup postman and make all calls for user DONE (DELETE is left)
+ - create user routes 
     -get user DONE
     -get users DONE
     -login DONE
-    -logout DONE
+    -logout
     -Sign Up DONE
     -Update user DONE
     -Delete user DONE
- -create user Controllers
+ - create user Controllers
     -get user Done
     -get users Done
-    -login 
+    -login  Done
     -logout 
     -Sign Up Done
-    -Update user 
-    -Delete user 
-    -update image
+    -Update user Done 
+    -Delete user Done
+    -update image 
+
+
+PRODUCT
+- routes:
+   - Buyer:
+      - Normal Get(sort either by date or location(zipcode)) DONE - ADD FILTERS + Pagination + sorting LEFT
+   - Seller:
+      - Create product DONE
+      - Get my products DONE
+      - Update product DONE
+      - Delete product DONE
+- controllers - SAME AS ABOVE DONE
+
+ORDER
+- routes:
+   - Buyer:
+      - Create Order
+      - Get my orders
+      - Get my previous orders (enter isCompleted boolean in Order model)
+      - Delete Order (keep this as an option - if time permits, involves complex roll back and checking status of the order)
+   - Seller:
+      - Get my orders
+      - Get my previous orders (enter isCompleted boolean in Order model)
