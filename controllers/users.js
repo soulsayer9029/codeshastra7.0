@@ -33,7 +33,7 @@ exports.getUser = asyncHandler(async (req, res, next) => {
   });
 });
 
-//@desc     Get all users
+//@desc     Create a new users
 //@route    POST /api/v1/users
 //@access   Public
 exports.createUser = asyncHandler(async (req, res, next) => {
@@ -42,8 +42,8 @@ exports.createUser = asyncHandler(async (req, res, next) => {
   const hashedPassword=await bcrypt.hash(req.body.password,salt)
   
   const user=new User({
-    firstname:req.body.firstname,
-    lastname:req.body.lastname,
+    firstName:req.body.firstName,
+    lastName:req.body.lastName,
     email:req.body.email,
     aadharNumber:req.body.aadharNumber,
     state:req.body.state,
@@ -53,7 +53,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
     password:hashedPassword,
   });
 //saving 
-  user.save()
+  await user.save()
   res.status(200).json({
     sucess: true,
     data: user
@@ -65,15 +65,20 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 exports.login=async(req,res)=>{
     const user=await User.findOne({email:req.body.email})
       if(!user){
-          return res.status(400).send("Invalid credentials")
+          return res.status(400).send("Invalid credentials + User not found");
       }
+      console.log(user)
       const validPassword = await bcrypt.compare(req.body.password ,user.password)
+      
       if(!validPassword){
           return res.status(400).send("Invalid Credentials")
       }
       try{
         const token=jwt.sign({_id:user._id},process.env.TOKEN_SECRET);
-        res.header('auth-token',token).send(token);
+        res.status(200).header('auth-token',token).json({
+          sucess: true,
+          data: token
+        });
       }catch(e){
         return res.status(400).send("Login failed")
       }
