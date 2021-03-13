@@ -59,14 +59,14 @@ exports.getPlacedOrders = asyncHandler( async(req, res, next) => {
   const user=await User.findById(req.user._id);
   if(user.role==="buyer"){
     const orders=await Order.find({buyer:req.user._id,
-      status:'Placed'}).populate('buyer', 'state').populate('seller', 'state');
+      status:'Placed'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
       return res.status(200).json({
         success:true,
         data:orders,
         count:orders.length
       });
   } else if(user.role === 'seller') {
-    const orders = await Orders.find({seller:req.user._id, status:'Placed'}).populate('buyer', 'state').populate('seller', 'state');
+    const orders = await Orders.find({seller:req.user._id, status:'Placed'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
       return res.status(200).json({
         success:true,
         data:orders,
@@ -74,7 +74,7 @@ exports.getPlacedOrders = asyncHandler( async(req, res, next) => {
       });
   } else {
     const orders=await Order.find({middleman:req.user._id,
-      status:'Placed'}).populate('buyer', 'state').populate('seller', 'state');
+      status:'Placed'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
       return res.status(200).json({
           success:true,
           data:orders,
@@ -90,14 +90,14 @@ exports.getDispatchedOrders = asyncHandler( async(req, res, next) => {
   const user=await User.findById(req.user._id);
   if(user.role==="buyer"){
     const orders=await Order.find({buyer:req.user._id,
-      status:'Dispatched'}).populate('buyer', 'state').populate('seller', 'state');
+      status:'Dispatched'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
       return res.status(200).json({
         success:true,
         data:orders, 
         count:orders.length
       });
   } else if(user.role === 'seller') {
-    const orders = await Orders.find({seller:req.user._id, status:'Dispatched'}).populate('buyer', 'state').populate('seller', 'state');
+    const orders = await Orders.find({seller:req.user._id, status:'Dispatched'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
       return res.status(200).json({
         success:true,
         data:orders,
@@ -105,7 +105,7 @@ exports.getDispatchedOrders = asyncHandler( async(req, res, next) => {
       });
   } else {
     const orders=await Order.find({middleman:req.user._id,
-      status:'Dispatched'}).populate('buyer', 'state').populate('seller', 'state');
+      status:'Dispatched'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
       return res.status(200).json({
           success:true,
           data:orders,
@@ -120,14 +120,14 @@ exports.getDeliveredOrders = asyncHandler( async(req, res, next) => {
   const user=await User.findById(req.user._id);
   if(user.role==="buyer"){
     const orders=await Order.find({buyer:req.user._id,
-      status: 'Delivered'}).populate('buyer', 'state').populate('seller', 'state');
+      status: 'Delivered'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
       return res.status(200).json({
         success:true,
         data:orders,
         count:orders.length
       });
   } else if(user.role === 'seller') {
-    const orders = await Orders.find({seller:req.user._id, status: 'Delivered'}).populate('buyer', 'state').populate('seller', 'state');
+    const orders = await Orders.find({seller:req.user._id, status: 'Delivered'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
       return res.status(200).json({
         success:true,
         data:orders,
@@ -135,7 +135,7 @@ exports.getDeliveredOrders = asyncHandler( async(req, res, next) => {
       });
   } else {
     const orders=await Order.find({middleman:req.user._id,
-      status:'Delivered'}).populate('buyer', 'state').populate('seller', 'state');
+      status:'Delivered'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
       return res.status(200).json({
           success:true,
           data:orders,
