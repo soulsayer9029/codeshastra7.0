@@ -8,7 +8,8 @@ const {
     getDeliveredOrders,
     deleteOrder,
     acceptOrder,
-    deliverOrder
+    deliverOrder,
+    sendOTPMail
 } = require('../controllers/orders.js');
 
 //Create order
@@ -27,6 +28,8 @@ router.delete('/:id',verifyToken,deleteOrder);
 
 router.patch('/accept/:id', verifyToken, acceptOrder);
 
-router.patch('/deliver/:id', verifyToken, deliverOrder);
+router.patch('/delivered/:id', verifyToken, deliverOrder);
+
+router.post('/deliver/:id',verifyToken,sendOTPMail)
 
 module.exports=router;

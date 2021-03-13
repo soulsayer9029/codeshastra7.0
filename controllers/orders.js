@@ -3,6 +3,17 @@ const Order = require('../models/Order.js')
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User.js');
 
+const nodemailer=require('nodemailer')
+var transporter=nodemailer.createTransport({
+    service:'Gmail',
+    auth:{
+        user:'nodeforme@gmail.com',
+        pass:process.env.PASSWORD
+
+    },
+    port:465
+})
+
 // @desc     Create order - used only for buyer
 // @route    Post /api/v1/orders/
 // @access   Private/Admin
@@ -193,7 +204,7 @@ exports.acceptOrder = asyncHandler( async(req, res, next)=>{
 });
 
 // @desc     Deliver Orders
-// @route    PATCH /api/v1/orders/deliver/:id
+// @route    PATCH /api/v1/orders/delivered/:id
 // @access   Private/Admin
 exports.deliverOrder = asyncHandler(async(req, res, next) => {
   const user = await User.findById(req.user._id);
@@ -219,3 +230,30 @@ exports.deliverOrder = asyncHandler(async(req, res, next) => {
     data: order
   });
 });
+
+exports.sendOTPMail = async(req,res,next)=>{
+  const order = await Order.findById(req.params.id);
+  const buyer=await User.findById(order.buyer);
+  
+  const otp=Math.floor(100000 + Math.random() * 900000)
+  transporter.sendMail({
+    from:"nodeforme@gmail.com",
+    to:buyer.email,
+    subject:"One time password for verification",
+    message:`Your One time Password for completing the delivery is ${otp}.Please share it with the delivery guy. `
+  }
+,(error,info)=>{
+  if(error){
+    res.status(400).json({
+      success:false,
+      data:"Mail was not sent"
+    })
+  }else{
+    res.status(200).json({
+      success:true,
+      data:"mail succesfully sent",
+      otp:otp
+    })
+  }
+})
+}
