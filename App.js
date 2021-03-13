@@ -8,7 +8,7 @@ import {persistor} from './src/redux/store.js'
 import {PersistGate} from 'redux-persist/integration/react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import SellerNavigation from './src/seller/navigation';
 const Stack = createStackNavigator();
 
 const theme = {
@@ -23,8 +23,10 @@ export default function App(){
       <Provider store={Store}>
         <PersistGate loading={null} persistor={persistor}>
           <NavigationContainer>
-            <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="Login">
+            <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="Seller">
               <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Seller" component={SellerNavigation} />
+              
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>
