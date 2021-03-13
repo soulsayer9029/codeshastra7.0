@@ -6,7 +6,8 @@ const {
   getUser,
   createUser,
   login,
-  updateUser
+  updateUser,
+  deleteUser
 } = require('../controllers/users');
 
 // all routes should be api/user/" xyz "
@@ -24,9 +25,9 @@ router.post("/signup",createUser)
 router.post("/login",login)
 
 // //Update particular user with id
-router.patch("/:id",verifyToken,updateUser);
+router.patch("/:id", verifyToken, updateUser);
 
-// //Delete user with given id
-// router.delete("/:id", deleteUser);
+//Delete user with given id
+router.delete("/:id", verifyToken, deleteUser);
 
 module.exports=router;

@@ -7,7 +7,7 @@ const mongoose  =require('mongoose')
 require('dotenv/config')
 app.use(cors())
 const bodyParser=require('body-parser')
-app.use(bodyParser.json())
+app.use(express.json())
 
 const users = require('./routes/users');
 

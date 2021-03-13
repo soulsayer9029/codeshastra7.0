@@ -91,7 +91,7 @@ exports.login=async(req,res)=>{
 exports.updateUser = asyncHandler(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-    runValidators: true,
+    runValidators: true
   });
 
   res.status(200).json({
@@ -113,6 +113,6 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
   user.remove();
   res.status(200).json({
     success: true,
-    data: user
+    data: 'user deleted'
   });
 });
