@@ -127,7 +127,7 @@ exports.getDeliveredOrders = asyncHandler( async(req, res, next) => {
         count:orders.length
       });
   } else if(user.role === 'seller') {
-    const orders = await Orders.find({seller:req.user._id, status: 'Delivered'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
+    const orders = await Order.find({seller:req.user._id, status: 'Delivered'}).populate('buyer', 'state').populate('seller', 'state').populate('product', 'purity');
       return res.status(200).json({
         success:true,
         data:orders,
