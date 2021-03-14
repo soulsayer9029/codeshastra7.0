@@ -208,7 +208,7 @@ exports.acceptOrder = asyncHandler( async(req, res, next)=>{
 // @access   Private/Admin
 exports.deliverOrder = asyncHandler(async(req, res, next) => {
   const user = await User.findById(req.user._id);
-  if(user.role!=='middleman') {
+  if(user.role!=='buyer') {
     return res.status(400).json({
       success: false,
       data: 'You cannot confirm order deliver'
@@ -217,7 +217,7 @@ exports.deliverOrder = asyncHandler(async(req, res, next) => {
 
   const order = await Order.findById(req.params.id);
 
-  if(String(order.middleman)!==String(user._id)) {
+  if(String(order.buyer)!==String(user._id)) {
     return res.status(400).json({
       success: true,
       data: 'This is not your assigned order to deliver'
